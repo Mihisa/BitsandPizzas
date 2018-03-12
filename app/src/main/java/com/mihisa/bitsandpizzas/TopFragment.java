@@ -24,7 +24,7 @@ public class TopFragment extends android.app.Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_top, container, false);
         RecyclerView pizzaRecycle = (RecyclerView)layout.findViewById(R.id.pizza_recycler);
@@ -49,7 +49,33 @@ public class TopFragment extends android.app.Fragment {
                 getActivity().startActivity(intent);
             }
         });
+//        RelativeLayout layout1 = (RelativeLayout) inflater.inflate(R.layout.fragment_top, container, false);
+        RecyclerView pastaRecycle = layout.findViewById(R.id.pasta_recycler);
+        String[] pastaNames = new String[2];
+        for (int i = 0; i < 2; i++) {
+            pastaNames[i] = Pasta.pasta[i].getName();
+        }
+        int[] pastaImages = new int[2];
+        for(int i = 0; i < 2; i++) {
+             pastaImages[i] = Pasta.pasta[i].getImageResourceId();
+        }
+        GridLayoutManager layoutManager1 = new GridLayoutManager(getActivity(), 2);
+        pastaRecycle.setLayoutManager(layoutManager1);
+
+        CaptionedImageAdapter adapter1 = new CaptionedImageAdapter(pastaNames, pastaImages);
+        pastaRecycle.setAdapter(adapter1);
+        adapter1.setListener(new CaptionedImageAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(getActivity(), PastaDetailActivity.class);
+                intent.putExtra(PastaDetailActivity.EXTRA_PASTANO, position);
+                getActivity().startActivity(intent);
+            }
+        });
+
         return layout;
     }
+
+
 
 }
